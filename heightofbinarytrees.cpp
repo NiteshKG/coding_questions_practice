@@ -47,23 +47,36 @@
  }
 
 //diameter of tree
-int diameter(node* root){
+
+pair<int,int>diameterFast(node* root){
    if(root == NULL){
-    return 0;
+    pair<int,int> p = make_pair(0,0);
+    return p;
+
+    pair<int,int> left = diameterFast(root->left);
+    pair<int,int> right = diameterFast(root->right);
+
+    int op1 = left.first;
+    int op2 = right.first;
+    int op3 = left.second + right.second + 1;
+
+    pair<int,int> ans;
+
+    ans.first = max(op1,max(op2,op3));
+    ans.second = max(left.second , right.second) + 1;
    }
+}
 
-   int op1 = diameter(root->left);
-   int op2 = diameter(root->right);
-   int op3 = height(root->left) + height(root->right) + 1;
-
-   int ans = max(op1,max(op2,op3));
-   return ans;
+int diameter(node* root){
+   
+   return diameterFast(root).first;
 }
 int main()
 {
     node* root = NULL;
     root = buildTree(root);
     cout<<"HEight of tree is :"<<height(root);
+    cout<<"Diameter of tree is :"<<diameter(root);
 
     return 0;
 }
